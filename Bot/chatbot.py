@@ -1,7 +1,6 @@
 import telebot
 from base import db_add,cursor
 
-bot = telebot.TeleBot("5518859686:AAGbauZZ8cwN7kWD2e3NiV6I6dh51S8mmbg")
 
 
 
