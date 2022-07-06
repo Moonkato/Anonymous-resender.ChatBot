@@ -1,22 +1,27 @@
 import telebot
 from base import db_add,cursor
 
+bot = telebot.TeleBot("TOKEN")
 
 
 
 @bot.message_handler(commands=['start'])
 def send_welcome(message):
-    bot.send_message(message.from_user.id,"Привет, " + message.from_user.first_name + ", я - помощник Аскара,отправь мне сообщение и укажи ник того,кто это сообщение должен получить (Первое сообщение-username человека, второе сообщение - сообщение для пользователя) Для продолжения напиши continue ")
+    bot.send_message(message.from_user.id,"Привет, " + message.from_user.first_name + ", я - помощник Аскара, отправь мне сообщение и укажи ник того, кто это сообщение должен получить (Первое сообщение - username человека (без символа @), второе сообщение - сообщение для пользователя) Пример результата: @username message. Для продолжения напиши continue ")
 
 @bot.message_handler(commands=['help'])
 def send_info(message):
-    bot.send_message(message.from_user.id,"Я - помощник Аскара,отправь мне сообщение и укажи ник того,кто это сообщение должен получить (Первое сообщение-username человека, второе сообщение - сообщение для пользователя) Для продолжения напиши continue ")
+    bot.send_message(message.from_user.id,"Я - помощник Аскара, отправь мне сообщение и укажи ник того, кто это сообщение должен получить (Первое сообщение - username человека (без символа @), второе сообщение - сообщение для пользователя) Пример результата: @username message. Для продолжения напиши continue ")
 
 @bot.message_handler(content_types = ['text'])
 def get_text_message(message):
     if message.text == "continue":
-        username = bot.send_message(message.chat.id,'Введите username')
+        username = bot.send_message(message.chat.id,'Введите username ')
         bot.register_next_step_handler(username,first_step)
+
+    elif message.text == "Continue":
+        username = bot.send_message(message.chat.id, 'Введите username ')
+        bot.register_next_step_handler(username, first_step)
 
     else:
         bot.send_message(message.from_user.id,"Хей!, напиши /help для того, чтобы я тебе рассказал о себе")
@@ -42,7 +47,6 @@ def second_step(message):
 
     db_add(user_id = us_id ,username_sender= username_sender , username =  answers[0] , user_message = answers[1])
 
-    bot.send_message(chat_id=-638707590,text="hello,world!")
 
     rowid = cursor.lastrowid
 
@@ -50,7 +54,7 @@ def second_step(message):
 
     result = cursor.fetchone()
 
-    bot.send_message(chat_id=-638707590,text="@" + result[3] + " " + result[4])
+    bot.send_message(chat_id=-704494631,text="@" + result[3] + " " + result[4])
 
 
 
